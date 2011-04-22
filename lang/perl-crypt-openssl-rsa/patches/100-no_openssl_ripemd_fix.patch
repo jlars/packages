@@ -1,0 +1,53 @@
+--- a/RSA.xs
++++ b/RSA.xs
+@@ -9,7 +9,9 @@
+ #include <openssl/objects.h>
+ #include <openssl/pem.h>
+ #include <openssl/rand.h>
++#ifndef OPENSSL_NO_RIPEMD
+ #include <openssl/ripemd.h>
++#endif
+ #include <openssl/rsa.h>
+ #include <openssl/sha.h>
+ #include <openssl/ssl.h>
+@@ -89,9 +91,11 @@ int get_digest_length(int hash_method)
+             return SHA512_DIGEST_LENGTH;
+             break;
+ #endif
++#ifndef OPENSSL_NO_RIPEMD
+         case NID_ripemd160:
+             return RIPEMD160_DIGEST_LENGTH;
+             break;
++#endif
+         default:
+             croak("Unknown digest hash code");
+             break;
+@@ -127,9 +131,11 @@ unsigned char* get_message_digest(SV* te
+             return SHA512(text, text_length, NULL);
+             break;
+ #endif
++#ifndef OPENSSL_NO_RIPEMD
+         case NID_ripemd160:
+             return RIPEMD160(text, text_length, NULL);
+             break;
++#endif
+         default:
+             croak("Unknown digest hash code");
+             break;
+@@ -526,12 +532,16 @@ use_sha512_hash(p_rsa)
+ 
+ #endif
+ 
++#ifndef OPENSSL_NO_RIPEMD
++
+ void
+ use_ripemd160_hash(p_rsa)
+     rsaData* p_rsa;
+   CODE:
+     p_rsa->hashMode =  NID_ripemd160;
+ 
++#endif
++
+ void
+ use_no_padding(p_rsa)
+     rsaData* p_rsa;
