@@ -49,7 +49,7 @@ define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libao.{a,so*} $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/ao/plugins-4
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/{*.a,*.so} $(1)/usr/lib/ao/plugins-4/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/{libalsa,liboss}.{a,so} $(1)/usr/lib/ao/plugins-4/
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/ao.pc $(1)/usr/lib/pkgconfig/
 endef
@@ -58,7 +58,7 @@ define Package/libao/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libao.so.* $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/ao/plugins-4
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/*.so $(1)/usr/lib/ao/plugins-4/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/{libalsa,liboss}.so $(1)/usr/lib/ao/plugins-4/
 endef
 
 $(eval $(call BuildPackage,libao))
