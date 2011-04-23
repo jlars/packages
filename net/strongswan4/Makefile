@@ -122,71 +122,6 @@ $(call Package/strongswan4/description/Default)
 endef
 
 
-define Package/strongswan4-full
-$(call Package/strongswan4/Default)
-  TITLE+= (full)
-  DEPENDS:= strongswan4 \
-	+strongswan4-app-charon \
-	+strongswan4-app-pluto \
-	+strongswan4-mod-aes \
-	+strongswan4-mod-agent \
-	+strongswan4-mod-attr \
-	+strongswan4-mod-attr-sql \
-	+strongswan4-mod-blowfish \
-	+strongswan4-mod-constraints \
-	+strongswan4-mod-curl \
-	+strongswan4-mod-des \
-	+strongswan4-mod-dhcp \
-	+strongswan4-mod-dnskey \
-	+strongswan4-mod-eap-md5 \
-	+strongswan4-mod-eap-mschapv2 \
-	+strongswan4-mod-eap-radius \
-	+strongswan4-mod-farp \
-	+strongswan4-mod-fips-prf \
-	+strongswan4-mod-gcrypt \
-	+strongswan4-mod-gmp \
-	+strongswan4-mod-hmac \
-	+strongswan4-mod-kernel-klips \
-	+strongswan4-mod-kernel-netlink \
-	+strongswan4-mod-kernel-pfkey \
-	+strongswan4-mod-ldap \
-	+strongswan4-mod-led \
-	+strongswan4-mod-load-tester \
-	+strongswan4-mod-md5 \
-	+strongswan4-mod-medcli \
-	+strongswan4-mod-medsrv \
-	+strongswan4-mod-mysql \
-	+TARGET_x86:strongswan4-mod-padlock \
-	+strongswan4-mod-pem \
-	+strongswan4-mod-pgp \
-	+strongswan4-mod-pkcs1 \
-	+strongswan4-mod-pubkey \
-	+strongswan4-mod-random \
-	+strongswan4-mod-resolve \
-	+strongswan4-mod-revocation \
-	+strongswan4-mod-sha1 \
-	+strongswan4-mod-sha2 \
-	+strongswan4-mod-smp \
-	+strongswan4-mod-socket-default \
-	+strongswan4-mod-socket-raw \
-	+strongswan4-mod-sql \
-	+strongswan4-mod-sqlite \
-	+strongswan4-mod-stroke \
-	+strongswan4-mod-uci \
-	+strongswan4-mod-updown \
-	+strongswan4-mod-x509 \
-	+strongswan4-mod-xauth \
-	+strongswan4-mod-xcbc \
-	+strongswan4-utils
-endef
-
-define Package/strongswan4-full/description
-$(call Package/strongswan4/description/Default)
- .
- This meta-package contains only dependencies for a complete setup.
-endef
-
-
 define Package/strongswan4-default
 $(call Package/strongswan4/Default)
   TITLE+= (default)
@@ -306,7 +241,7 @@ define BuildPlugin
 
   define Package/strongswan4-mod-$(1)/install
 	$(INSTALL_DIR) $$(1)/usr/lib/ipsec/plugins
-	$(CP) \
+	$(INSTALL_DATA) \
 		$(PKG_INSTALL_DIR)/usr/lib/ipsec/plugins/libstrongswan-$(1).so \
 		$$(1)/usr/lib/ipsec/plugins/ ;
 	$(call Plugin/$(1)/install,$$(1))
@@ -321,6 +256,7 @@ CONFIGURE_ARGS+= \
 	$(if $(CONFIG_STRONGSWAN4_ENABLE_NAT_TRANSPORT),--enable-nat-transport,--disable-nat-transport) \
 	$(if $(CONFIG_STRONGSWAN4_ENABLE_VENDOR_ID),--enable-vendor-id,--disable-vendor-id) \
 	$(if $(CONFIG_STRONGSWAN4_ENABLE_XAUTH_VID),--enable-xauth-vid,--disable-xauth-vid) \
+	--disable-fast \
 	--disable-scripts \
 	--disable-static \
 	$(if $(CONFIG_PACKAGE_strongswan4-utils),--enable-tools,--disable-tools) \
@@ -346,32 +282,18 @@ endef
 define Package/strongswan4/install
 	$(INSTALL_DIR) $(1)/etc
 	$(CP) -R $(PKG_INSTALL_DIR)/etc/ipsec.d $(1)/etc/
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/etc/{ipsec.conf,strongswan.conf} $(1)/etc/
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/libstrongswan.so.* \
-		$(PKG_INSTALL_DIR)/usr/lib/libhydra.so.* \
-		$(1)/usr/lib/
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/{libstrongswan.so.*,libhydra.so.*} $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(CP) $(PKG_INSTALL_DIR)/usr/sbin/ipsec $(1)/usr/sbin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/ipsec $(1)/usr/sbin/
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/_copyright \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/starter \
-		$(1)/usr/lib/ipsec/
-	$(INSTALL_CONF) \
-		./files/ipsec.conf \
-		./files/ipsec.secrets \
-		./files/strongswan.conf \
-		$(1)/etc/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/{_copyright,starter} $(1)/usr/lib/ipsec/
+	$(INSTALL_CONF) ./files/ipsec.secrets $(1)/etc/
 endef
 
 
 define Package/strongswan4-default/install
-	true
-endef
-
-
-define Package/strongswan4-full/install
 	true
 endef
 
@@ -383,54 +305,37 @@ endef
 
 define Package/strongswan4-app-charon/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcharon.so.* $(1)/usr/lib/
+	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libcharon.so.* $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/charon \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/stroke \
-		$(1)/usr/lib/ipsec/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/{charon,stroke} $(1)/usr/lib/ipsec/
 endef
 
 
 define Package/strongswan4-app-pluto/install
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/pluto \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/_pluto_adns \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/whack \
-		$(1)/usr/lib/ipsec/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/{pluto,_pluto_adns,whack} $(1)/usr/lib/ipsec/
 endef
 
 
 define Package/strongswan4-utils/install
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/openac \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/pki \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/scepclient \
-		$(1)/usr/lib/ipsec/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/{openac,pki,scepclient} $(1)/usr/lib/ipsec/
 endef
 
 
 define Plugin/attr-sql/install
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/pool \
-		$(1)/usr/lib/ipsec/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/pool $(1)/usr/lib/ipsec/
 endef
 
 define Plugin/updown/install
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
-	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/_updown \
-		$(PKG_INSTALL_DIR)/usr/lib/ipsec/_updown_espmark \
-		$(1)/usr/lib/ipsec/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/{_updown,_updown_espmark} $(1)/usr/lib/ipsec/
 endef
 
 
 $(eval $(call BuildPackage,strongswan4))
 $(eval $(call BuildPackage,strongswan4-default))
-$(eval $(call BuildPackage,strongswan4-full))
 $(eval $(call BuildPackage,strongswan4-minimal))
 $(eval $(call BuildPackage,strongswan4-app-charon))
 $(eval $(call BuildPackage,strongswan4-app-pluto))
