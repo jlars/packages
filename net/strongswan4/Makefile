@@ -241,7 +241,7 @@ define BuildPlugin
 
   define Package/strongswan4-mod-$(1)/install
 	$(INSTALL_DIR) $$(1)/usr/lib/ipsec/plugins
-	$(INSTALL_DATA) \
+	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/lib/ipsec/plugins/libstrongswan-$(1).so \
 		$$(1)/usr/lib/ipsec/plugins/ ;
 	$(call Plugin/$(1)/install,$$(1))
@@ -282,9 +282,9 @@ endef
 define Package/strongswan4/install
 	$(INSTALL_DIR) $(1)/etc
 	$(CP) -R $(PKG_INSTALL_DIR)/etc/ipsec.d $(1)/etc/
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/etc/{ipsec.conf,strongswan.conf} $(1)/etc/
+	$(CP) $(PKG_INSTALL_DIR)/etc/{ipsec.conf,strongswan.conf} $(1)/etc/
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/{libstrongswan.so.*,libhydra.so.*} $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/{libstrongswan.so.*,libhydra.so.*} $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/ipsec $(1)/usr/sbin/
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
@@ -305,7 +305,7 @@ endef
 
 define Package/strongswan4-app-charon/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libcharon.so.* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcharon.so.* $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/lib/ipsec
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/ipsec/{charon,stroke} $(1)/usr/lib/ipsec/
 endef
