@@ -122,6 +122,71 @@ $(call Package/strongswan4/description/Default)
 endef
 
 
+define Package/strongswan4-full
+$(call Package/strongswan4/Default)
+  TITLE+= (full)
+  DEPENDS:= strongswan4 \
+	+strongswan4-app-charon \
+	+strongswan4-app-pluto \
+	+strongswan4-mod-aes \
+	+strongswan4-mod-agent \
+	+strongswan4-mod-attr \
+	+strongswan4-mod-attr-sql \
+	+strongswan4-mod-blowfish \
+	+strongswan4-mod-constraints \
+	+strongswan4-mod-curl \
+	+strongswan4-mod-des \
+	+strongswan4-mod-dhcp \
+	+strongswan4-mod-dnskey \
+	+strongswan4-mod-eap-md5 \
+	+strongswan4-mod-eap-mschapv2 \
+	+strongswan4-mod-eap-radius \
+	+strongswan4-mod-farp \
+	+strongswan4-mod-fips-prf \
+	+strongswan4-mod-gcrypt \
+	+strongswan4-mod-gmp \
+	+strongswan4-mod-hmac \
+	+strongswan4-mod-kernel-netlink \
+	+strongswan4-mod-ldap \
+	+strongswan4-mod-led \
+	+strongswan4-mod-load-tester \
+	+strongswan4-mod-md5 \
+	+strongswan4-mod-medcli \
+	+strongswan4-mod-medsrv \
+	+strongswan4-mod-mysql \
+	+TARGET_x86:strongswan4-mod-padlock \
+	+strongswan4-mod-pem \
+	+strongswan4-mod-pgp \
+	+strongswan4-mod-pkcs1 \
+	+strongswan4-mod-pubkey \
+	+strongswan4-mod-random \
+	+strongswan4-mod-resolve \
+	+strongswan4-mod-revocation \
+	+strongswan4-mod-sha1 \
+	+strongswan4-mod-sha2 \
+	+strongswan4-mod-smp \
+	+strongswan4-mod-socket-raw \
+	+strongswan4-mod-sql \
+	+strongswan4-mod-sqlite \
+	+strongswan4-mod-stroke \
+	+strongswan4-mod-uci \
+	+strongswan4-mod-updown \
+	+strongswan4-mod-x509 \
+	+strongswan4-mod-xauth \
+	+strongswan4-mod-xcbc \
+	+strongswan4-utils
+endef
+
+define Package/strongswan4-full/description
+$(call Package/strongswan4/description/Default)
+ .
+ This meta-package contains dependencies for all of the packaged 
+ strongswan4 plugins except kernel-klips, kernel-pfkey, and 
+ socket-default which are omitted in favor of kernel-netlink and 
+ socket-raw.
+endef
+
+
 define Package/strongswan4-default
 $(call Package/strongswan4/Default)
   TITLE+= (default)
@@ -298,6 +363,11 @@ define Package/strongswan4-default/install
 endef
 
 
+define Package/strongswan4-full/install
+	true
+endef
+
+
 define Package/strongswan4-minimal/install
 	true
 endef
@@ -336,6 +406,7 @@ endef
 
 $(eval $(call BuildPackage,strongswan4))
 $(eval $(call BuildPackage,strongswan4-default))
+$(eval $(call BuildPackage,strongswan4-full))
 $(eval $(call BuildPackage,strongswan4-minimal))
 $(eval $(call BuildPackage,strongswan4-app-charon))
 $(eval $(call BuildPackage,strongswan4-app-pluto))
