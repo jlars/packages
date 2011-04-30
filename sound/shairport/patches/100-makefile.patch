@@ -7,5 +7,5 @@
 +CFLAGS+=-O2 -Wall
 +LDFLAGS+=-lm -lpthread
  
- all: hairtunes
+ all: hairtunes shairport
  

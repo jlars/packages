@@ -14,7 +14,7 @@ PKG_RELEASE:=$(PKG_SOURCE_VERSION)
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git://github.com/albertz/shairport.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=d670169c522266d5ba448aba432508d8e1f402e5
+PKG_SOURCE_VERSION:=8ad20045a0390b7de4c71962e336d2596b80fd92
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 
 PKG_BUILD_PARALLEL:=1
@@ -45,7 +45,7 @@ endef
 
 define Package/shairport/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/{hairtunes,shairport.pl} $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/{hairtunes,shairport,shairport.pl} $(1)/usr/bin/
 endef
 
 $(eval $(call BuildPackage,shairport))
