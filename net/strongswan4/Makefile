@@ -147,6 +147,7 @@ $(call Package/strongswan4/Default)
 	+strongswan4-mod-gmp \
 	+strongswan4-mod-hmac \
 	+strongswan4-mod-kernel-netlink \
+	+strongswan4-mod-kernel-pfkey \
 	+strongswan4-mod-ldap \
 	+strongswan4-mod-led \
 	+strongswan4-mod-load-tester \
