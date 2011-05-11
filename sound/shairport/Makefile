@@ -47,7 +47,7 @@ endef
 
 
 define Package/shairport-perl
-$(call Package/strongswan4/Default)
+$(call Package/shairport/Default)
   TITLE+= (Perl)
   DEPENDS:= shairport +perl \
       +perl-crypt-openssl-rsa +perl-getopt-long \
@@ -60,8 +60,8 @@ $(call Package/strongswan4/Default)
       +perlbase-selectsaver +perlbase-socket +perlbase-symbol \
       +perlbase-tie +perlbase-xsloader
 endef
-define Package/strongswan4-app-charon/description
-$(call Package/strongswan4/description/Default)
+define Package/shairport-perl/description
+$(call Package/shairport/description/Default)
  .
  This package contains Perl ShairPort and Perl dependencies.
 endef
