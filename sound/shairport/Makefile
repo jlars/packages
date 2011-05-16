@@ -28,42 +28,36 @@ define Package/shairport/Default
   TITLE:=ShairPort
   URL:=http://mafipulation.org/
 endef
-define Package/shairport/description/Default
+
+
+define Package/shairport
+  $(Package/shairport/Default)
+  DEPENDS:= +libopenssl +libao +avahi-daemon +avahi-utils
+endef
+
+define Package/shairport/description
   ShairPort is server software that implements the RAOP protocol for
   playback of music streamed from a compatible remote client.
 endef
 
 
-define Package/shairport
-$(call Package/shairport/Default)
-  DEPENDS:= +libopenssl +libao +avahi-daemon +avahi-utils
-  MENU:=1
-endef
-define Package/shairport/description
-$(call Package/shairport/description/Default)
- .
- This package contains C-coded ShairPort.
-endef
-
-
 define Package/shairport-perl
-$(call Package/shairport/Default)
+  $(Package/shairport/Default)
   TITLE+= (Perl)
   DEPENDS:= shairport +perl \
-      +perl-crypt-openssl-rsa +perl-getopt-long \
-      +perl-http-message +perl-uri \
-      +perlbase-autoloader +perlbase-config +perlbase-cwd \
-      +perlbase-digest +perlbase-dynaloader +perlbase-errno \
-      +perlbase-essential +perlbase-fcntl +perlbase-feature \
-      +perlbase-file +perlbase-findbin +perlbase-io \
-      +perlbase-ipc +perlbase-mime +perlbase-posix \
-      +perlbase-selectsaver +perlbase-socket +perlbase-symbol \
-      +perlbase-tie +perlbase-xsloader
+	+perl-crypt-openssl-rsa +perl-getopt-long \
+	+perl-http-message +perl-uri \
+	+perlbase-autoloader +perlbase-config +perlbase-cwd \
+	+perlbase-digest +perlbase-dynaloader +perlbase-errno \
+	+perlbase-essential +perlbase-fcntl +perlbase-feature \
+	+perlbase-file +perlbase-findbin +perlbase-io \
+	+perlbase-ipc +perlbase-mime +perlbase-posix \
+	+perlbase-selectsaver +perlbase-socket +perlbase-symbol \
+	+perlbase-tie +perlbase-xsloader
 endef
+
 define Package/shairport-perl/description
-$(call Package/shairport/description/Default)
- .
- This package contains Perl ShairPort and Perl dependencies.
+  This package contains Perl ShairPort and Perl dependencies.
 endef
 
 
