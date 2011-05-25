@@ -188,8 +188,8 @@ define Package/strongswan4-full/description
 $(call Package/strongswan4/description/Default)
  .
  This meta-package contains dependencies for all of the strongswan4 
- plugins except kernel-klips, kernel-pfkey, and socket-default which 
- are omitted in favor of the kernel-netlink and socket-raw plugins.
+ plugins except kernel-klips and socket-default which are ommitted in 
+ favor of the kernel-netlink and socket-raw plugins.
 endef
 
 
