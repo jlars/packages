@@ -249,7 +249,7 @@ $(call Package/strongswan4/Default)
 	+strongswan4-mod-socket-default \
 	+strongswan4-mod-stroke \
 	+strongswan4-mod-updown \
-	+strongswan4-mod-x509 \
+	+strongswan4-mod-x509
 endef
 
 define Package/strongswan4-minimal/description
