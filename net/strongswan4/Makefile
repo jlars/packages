@@ -8,15 +8,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=strongswan
-PKG_VERSION:=4.5.2
+PKG_VERSION:=4.5.3dr7
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://download.strongswan.org/
-PKG_MD5SUM:=ac33b8f849a274127f84df0838cae953
+PKG_MD5SUM:=72036d309e254c0b3cad8e5473d68218
 
 PKG_MOD_AVAILABLE:= \
 	aes \
+	af-alg \
 	agent \
 	attr \
 	attr-sql \
@@ -95,13 +96,12 @@ define Package/strongswan4/Default
   SUBMENU:=VPN
   SECTION:=net
   CATEGORY:=Network
-  TITLE:=StrongSwan
+  TITLE:=strongSwan
   URL:=http://www.strongswan.org/
 endef
 
 define Package/strongswan4/description/Default
- StrongSwan is an OpenSource IPsec implementation for the Linux 
- operating system.
+ strongSwan is an open source IPsec-based VPN solution for Linux.
 endef
 
 
@@ -133,6 +133,7 @@ $(call Package/strongswan4/Default)
 	+strongswan4-app-pluto \
 	+strongswan4-libfast \
 	+strongswan4-mod-aes \
+	+strongswan4-mod-af-alg \
 	+strongswan4-mod-agent \
 	+strongswan4-mod-attr \
 	+strongswan4-mod-attr-sql \
@@ -241,18 +242,14 @@ $(call Package/strongswan4/Default)
   TITLE+= (minimal)
   DEPENDS:= strongswan4 \
 	+strongswan4-app-charon \
-	+strongswan4-mod-aes \
+	+strongswan4-mod-af-alg \
 	+strongswan4-mod-gmp \
-	+strongswan4-mod-hmac \
 	+strongswan4-mod-kernel-netlink \
-	+strongswan4-mod-pubkey \
 	+strongswan4-mod-random \
-	+strongswan4-mod-sha1 \
 	+strongswan4-mod-socket-default \
 	+strongswan4-mod-stroke \
 	+strongswan4-mod-updown \
 	+strongswan4-mod-x509 \
-	+strongswan4-mod-xcbc
 endef
 
 define Package/strongswan4-minimal/description
@@ -321,7 +318,7 @@ endef
 define BuildPlugin
   define Package/strongswan4-mod-$(1)
     $$(call Package/strongswan4/Default)
-    TITLE:= StrongSwan $(2) plugin
+    TITLE:= strongSwan $(2) plugin
     DEPENDS:= strongswan4 $(3)
   endef
 
@@ -443,6 +440,7 @@ $(eval $(call BuildPackage,strongswan4-libfast))
 $(eval $(call BuildPackage,strongswan4-utils))
 
 $(eval $(call BuildPlugin,aes,AES crypto,))
+$(eval $(call BuildPlugin,af-alg,AF_ALG Linux crypto API interface,+PACKAGE_strongswan4-mod-af-alg:kmod-crypto-user))
 $(eval $(call BuildPlugin,agent,SSH agent signing,))
 $(eval $(call BuildPlugin,attr,File-based config attr,))
 $(eval $(call BuildPlugin,attr-sql,SQL-based config attrib,+strongswan4-mod-sql))
