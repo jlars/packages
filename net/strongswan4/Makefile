@@ -17,6 +17,7 @@ PKG_MD5SUM:=72036d309e254c0b3cad8e5473d68218
 
 PKG_MOD_AVAILABLE:= \
 	aes \
+	af-alg \
 	agent \
 	attr \
 	attr-sql \
@@ -132,6 +133,7 @@ $(call Package/strongswan4/Default)
 	+strongswan4-app-pluto \
 	+strongswan4-libfast \
 	+strongswan4-mod-aes \
+	+strongswan4-mod-af-alg \
 	+strongswan4-mod-agent \
 	+strongswan4-mod-attr \
 	+strongswan4-mod-attr-sql \
@@ -241,20 +243,17 @@ $(call Package/strongswan4/Default)
   DEPENDS:= strongswan4 \
 	+strongswan4-app-charon \
 	+strongswan4-app-pluto \
-	+strongswan4-mod-aes \
+	+strongswan4-mod-af-alg \
 	+strongswan4-mod-gmp \
-	+strongswan4-mod-hmac \
 	+strongswan4-mod-kernel-netlink \
 	+strongswan4-mod-pem \
 	+strongswan4-mod-pkcs1 \
 	+strongswan4-mod-random \
-	+strongswan4-mod-sha1 \
 	+strongswan4-mod-socket-raw \
 	+strongswan4-mod-stroke \
 	+strongswan4-mod-updown \
 	+strongswan4-mod-x509 \
-	+strongswan4-mod-xauth \
-	+strongswan4-mod-xcbc
+	+strongswan4-mod-xauth
 endef
 
 define Package/strongswan4-minimal/description
@@ -270,19 +269,16 @@ $(call Package/strongswan4/Default)
   TITLE+= (minimal-ikev2)
   DEPENDS:= strongswan4 \
 	+strongswan4-app-charon \
-	+strongswan4-mod-aes \
+	+strongswan4-mod-af-alg \
 	+strongswan4-mod-gmp \
-	+strongswan4-mod-hmac \
 	+strongswan4-mod-kernel-netlink \
 	+strongswan4-mod-pem \
 	+strongswan4-mod-pkcs1 \
 	+strongswan4-mod-random \
-	+strongswan4-mod-sha1 \
 	+strongswan4-mod-socket-default \
 	+strongswan4-mod-stroke \
 	+strongswan4-mod-updown \
-	+strongswan4-mod-x509 \
-	+strongswan4-mod-xcbc
+	+strongswan4-mod-x509
 endef
 
 define Package/strongswan4-minimal-ikev2/description
@@ -297,17 +293,14 @@ $(call Package/strongswan4/Default)
   TITLE+= (minimal-ikev1)
   DEPENDS:= strongswan4 \
 	+strongswan4-app-pluto \
-	+strongswan4-mod-aes \
+	+strongswan4-mod-af-alg \
 	+strongswan4-mod-gmp \
-	+strongswan4-mod-hmac \
 	+strongswan4-mod-kernel-netlink \
 	+strongswan4-mod-pem \
 	+strongswan4-mod-pkcs1 \
 	+strongswan4-mod-random \
-	+strongswan4-mod-sha1 \
 	+strongswan4-mod-x509 \
-	+strongswan4-mod-xauth \
-	+strongswan4-mod-xcbc
+	+strongswan4-mod-xauth
 endef
 
 define Package/strongswan4-minimal-ikev1/description
@@ -510,6 +503,7 @@ $(eval $(call BuildPackage,strongswan4-libfast))
 $(eval $(call BuildPackage,strongswan4-utils))
 
 $(eval $(call BuildPlugin,aes,AES crypto,))
+$(eval $(call BuildPlugin,af-alg,AF_ALG Linux crypto API interface,+kmod-crypto-user))
 $(eval $(call BuildPlugin,agent,SSH agent signing,))
 $(eval $(call BuildPlugin,attr,File-based config attr,))
 $(eval $(call BuildPlugin,attr-sql,SQL-based config attrib,+strongswan4-mod-sql))
