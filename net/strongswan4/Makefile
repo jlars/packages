@@ -240,6 +240,36 @@ $(call Package/strongswan4/Default)
   TITLE+= (minimal)
   DEPENDS:= strongswan4 \
 	+strongswan4-app-charon \
+	+strongswan4-app-pluto \
+	+strongswan4-mod-aes \
+	+strongswan4-mod-gmp \
+	+strongswan4-mod-hmac \
+	+strongswan4-mod-kernel-netlink \
+	+strongswan4-mod-pem \
+	+strongswan4-mod-pkcs1 \
+	+strongswan4-mod-random \
+	+strongswan4-mod-sha1 \
+	+strongswan4-mod-socket-raw \
+	+strongswan4-mod-stroke \
+	+strongswan4-mod-updown \
+	+strongswan4-mod-x509 \
+	+strongswan4-mod-xauth \
+	+strongswan4-mod-xcbc
+endef
+
+define Package/strongswan4-minimal/description
+$(call Package/strongswan4/description/Default)
+ .
+ This meta-package contains only dependencies for a minimal setup 
+ with support for both IKEv1 and IKEv2.
+endef
+
+
+define Package/strongswan4-minimal-ikev2
+$(call Package/strongswan4/Default)
+  TITLE+= (minimal-ikev2)
+  DEPENDS:= strongswan4 \
+	+strongswan4-app-charon \
 	+strongswan4-mod-aes \
 	+strongswan4-mod-gmp \
 	+strongswan4-mod-hmac \
@@ -255,10 +285,35 @@ $(call Package/strongswan4/Default)
 	+strongswan4-mod-xcbc
 endef
 
-define Package/strongswan4-minimal/description
+define Package/strongswan4-minimal-ikev2/description
 $(call Package/strongswan4/description/Default)
  .
  This meta-package contains only dependencies for a minimal IKEv2 setup.
+endef
+
+
+define Package/strongswan4-minimal-ikev1
+$(call Package/strongswan4/Default)
+  TITLE+= (minimal-ikev1)
+  DEPENDS:= strongswan4 \
+	+strongswan4-app-pluto \
+	+strongswan4-mod-aes \
+	+strongswan4-mod-gmp \
+	+strongswan4-mod-hmac \
+	+strongswan4-mod-kernel-netlink \
+	+strongswan4-mod-pem \
+	+strongswan4-mod-pkcs1 \
+	+strongswan4-mod-random \
+	+strongswan4-mod-sha1 \
+	+strongswan4-mod-x509 \
+	+strongswan4-mod-xauth \
+	+strongswan4-mod-xcbc
+endef
+
+define Package/strongswan4-minimal-ikev1/description
+$(call Package/strongswan4/description/Default)
+ .
+ This meta-package contains only dependencies for a minimal IKEv1 setup.
 endef
 
 
@@ -396,6 +451,16 @@ define Package/strongswan4-minimal/install
 endef
 
 
+define Package/strongswan4-minimal-ikev2/install
+	true
+endef
+
+
+define Package/strongswan4-minimal-ikev1/install
+	true
+endef
+
+
 define Package/strongswan4-app-charon/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcharon.so.* $(1)/usr/lib/
@@ -437,6 +502,8 @@ $(eval $(call BuildPackage,strongswan4))
 $(eval $(call BuildPackage,strongswan4-default))
 $(eval $(call BuildPackage,strongswan4-full))
 $(eval $(call BuildPackage,strongswan4-minimal))
+$(eval $(call BuildPackage,strongswan4-minimal-ikev2))
+$(eval $(call BuildPackage,strongswan4-minimal-ikev1))
 $(eval $(call BuildPackage,strongswan4-app-charon))
 $(eval $(call BuildPackage,strongswan4-app-pluto))
 $(eval $(call BuildPackage,strongswan4-libfast))
