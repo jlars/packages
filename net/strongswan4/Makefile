@@ -17,7 +17,6 @@ PKG_MD5SUM:=72036d309e254c0b3cad8e5473d68218
 
 PKG_MOD_AVAILABLE:= \
 	aes \
-	af-alg \
 	agent \
 	attr \
 	attr-sql \
@@ -133,7 +132,6 @@ $(call Package/strongswan4/Default)
 	+strongswan4-app-pluto \
 	+strongswan4-libfast \
 	+strongswan4-mod-aes \
-	+strongswan4-mod-af-alg \
 	+strongswan4-mod-agent \
 	+strongswan4-mod-attr \
 	+strongswan4-mod-attr-sql \
@@ -242,14 +240,19 @@ $(call Package/strongswan4/Default)
   TITLE+= (minimal)
   DEPENDS:= strongswan4 \
 	+strongswan4-app-charon \
-	+strongswan4-mod-af-alg \
+	+strongswan4-mod-aes \
 	+strongswan4-mod-gmp \
+	+strongswan4-mod-hmac \
 	+strongswan4-mod-kernel-netlink \
+	+strongswan4-mod-pem \
+	+strongswan4-mod-pkcs1 \
 	+strongswan4-mod-random \
+	+strongswan4-mod-sha1 \
 	+strongswan4-mod-socket-default \
 	+strongswan4-mod-stroke \
 	+strongswan4-mod-updown \
-	+strongswan4-mod-x509
+	+strongswan4-mod-x509 \
+	+strongswan4-mod-xcbc
 endef
 
 define Package/strongswan4-minimal/description
@@ -440,7 +443,6 @@ $(eval $(call BuildPackage,strongswan4-libfast))
 $(eval $(call BuildPackage,strongswan4-utils))
 
 $(eval $(call BuildPlugin,aes,AES crypto,))
-$(eval $(call BuildPlugin,af-alg,AF_ALG Linux crypto API interface,+PACKAGE_strongswan4-mod-af-alg:kmod-crypto-user))
 $(eval $(call BuildPlugin,agent,SSH agent signing,))
 $(eval $(call BuildPlugin,attr,File-based config attr,))
 $(eval $(call BuildPlugin,attr-sql,SQL-based config attrib,+strongswan4-mod-sql))
@@ -481,8 +483,8 @@ $(eval $(call BuildPlugin,revocation,X.509 revocation checking,))
 $(eval $(call BuildPlugin,sha1,SHA1 crypto,))
 $(eval $(call BuildPlugin,sha2,SHA2 crypto,))
 $(eval $(call BuildPlugin,smp,SMP configuration and control interface,+PACKAGE_strongswan4-mod-smp:libxml2))
-$(eval $(call BuildPlugin,socket-default,default socket for IKEv2,))
-$(eval $(call BuildPlugin,socket-raw,RAW socket for IKEv1 and IKEv2,))
+$(eval $(call BuildPlugin,socket-default,default socket for charon,))
+$(eval $(call BuildPlugin,socket-raw,RAW socket allowing charon to run parallel with pluto,))
 $(eval $(call BuildPlugin,sql,SQL database interface,))
 $(eval $(call BuildPlugin,sqlite,SQLite database interface,+strongswan4-mod-sql +PACKAGE_strongswan4-mod-sqlite:libsqlite3))
 $(eval $(call BuildPlugin,stroke,Stroke,))
